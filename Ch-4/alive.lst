@@ -1,0 +1,37 @@
+     1                                  ; alive.asm
+     2                                  section .data
+     3 00000000 48656C6C6F2C20776F-         msg1    db  "Hello, world!",10
+     3 00000009 726C64210A         
+     4 0000000E 416C69766520616E64-         msg2    db  "Alive and kicking!",10
+     4 00000017 206B69636B696E6721-
+     4 00000020 0A                 
+     5                                      msg1Len equ $-msg1
+     6                                      msg2Len equ $-msg2
+     7 00000021 6501000000000000            radius  dq 357
+     8 00000029 1F85EB51B81E0940            pi      dq 3.14
+     9                                  section .bss
+    10                                  section .text
+    11                                      global main
+    12                                  main:
+    13 00000000 55                          push rbp
+    14 00000001 4889E5                      mov rbp, rsp
+    15                                  
+    16 00000004 B801000000                  mov rax, 1
+    17 00000009 BF01000000                  mov rdi, 1
+    18 0000000E 48BE-                       mov rsi, msg1
+    18 00000010 [0000000000000000] 
+    19 00000018 BA21000000                  mov rdx, msg1Len
+    20 0000001D 0F05                        syscall
+    21                                  
+    22 0000001F B801000000                  mov rax, 1
+    23 00000024 BF01000000                  mov rdi, 1
+    24 00000029 48BE-                       mov rsi, msg2
+    24 0000002B [0E00000000000000] 
+    25 00000033 BA13000000                  mov rdx, msg2Len
+    26 00000038 0F05                        syscall
+    27                                  
+    28 0000003A 4889EC                      mov rsp, rbp
+    29 0000003D 5D                          pop rbp
+    30 0000003E B83C000000                  mov rax, 60
+    31 00000043 BF00000000                  mov rdi, 0
+    32 00000048 0F05                        syscall
