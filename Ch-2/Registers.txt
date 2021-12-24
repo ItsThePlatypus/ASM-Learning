@@ -1,0 +1,38 @@
+- There are 16 general purpose registers
+- Remember: Lower bits are always the rightmost bits
+ ___________________________________________________
+| 64-Bit | 32-Bit | 16-Bit | Low 8-Bit | High 8-Bit |
+|---------------------------------------------------|
+| rax    | eax    | ax     | al        | ah         |
+| rbx    | ebx    | bx     | bl        | bh         |
+| rcx    | ecx    | cx     | cl        | ch         |
+| rdx    | edx    | dx     | dl        | dh         |
+| rsi    | esi    | si     | sil       |            |
+| rdi    | edi    | di     | dil       |            |
+| rbp    | ebp    | bp     | bpl       |            |
+| rsp    | esp    | sp     | spl       |            |
+| r8     | r8d    | r8w    | r8b       |            |
+| r9     | r9d    | r9w    | r9b       |            |
+| r10    | r10d   | r10w   | r10b      |            |
+| r11    | r11d   | r11w   | r11b      |            |
+| r12    | r12d   | r12w   | r12b      |            |
+| r13    | r13d   | r13w   | r13b      |            |
+| r14    | r14d   | r14w   | r14b      |            |
+| r15    | r15d   | r15w   | r15b      |            |
+ ---------------------------------------------------
+| rip    | eip    | ip     |           |            | <- Instruction Pointer: Stores address of next instruction
+ ---------------------------------------------------
+
+- There are 7 main flag registers 
+- A program can check if a certain flag is set (E.g ZF = 1 <- Flag is set)
+ ________________________________________________________________________________________________________
+|  Name       |  Symbol  |  Bit  |  Content                                                              |
+|-------------|----------|-------|-----------------------------------------------------------------------|
+|  Carry      |  CF      |  0    |  Previous instruction had a carry                                     |
+|  Parity     |  PF      |  2    |  Last byte had an even number of 1s                                   |
+|  Adjust     |  AF      |  4    |  BCD Operations                                                       |
+|  Zero       |  ZF      |  6    |  Previous instruction resulted in a 0                                 |
+|  Sign       |  SF      |  8    |  Previous instruction resulted in the most significant bit equal to 1 |
+|  Direction  |  DF      |  10   |  Direction of string operations (Increment or Decrement)              |
+|  Overflow   |  OF      |  11   |  Previous instruction resulted in an overflow                         |
+ --------------------------------------------------------------------------------------------------------

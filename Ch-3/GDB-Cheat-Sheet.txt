@@ -1,0 +1,54 @@
+*** LOADING A PROGRAM ***
+- To load a program 
+    -> gdb <executable name>
+- This loads the executable into GDB ready for analysis
+
+*** GDB BASICS ****
+- To view a program
+    -> list
+- To run a program
+    -> run
+- To quit
+    -> quit
+
+*** GENERAL ANALYSIS ***
+- Set flavour
+    -> set disassembly-flavor <flavour>
+- Disassemble a function
+    -> disassemble <function/section name>
+- Examine a string from address 
+    -> x/s <memory address>
+    -> E.g: x/s 0x601030
+- If you know the name of a variable, you can use
+    -> x/s &<variable name>
+    -> E.g: x/s &msg
+
+*** DEBUGGING ***
+- Set breakpoint
+    -> break <function/section>
+    -> E.g: break main
+- Enable/Disable breakpoints
+    -> enable breakpoint <breakpoint number>
+    -> disable breakpoint <breakpoint number>
+- Delete a breakpoint
+    -> delete breakpoint <breakpoint number>
+
+- View registers at breakpoint
+    -> info registers
+    -> i r 
+- Step through program
+    -> step 
+- Run program to next breakpoint
+    -> continue
+- Print certain values
+    -> print 
+    -> p 
+
+*** USEFUL COMMANDS ***
+- Enable/Disable a simple UI
+    -> tui enable
+    -> tui disable 
+- Print a value
+    Regularly -> p $<variable/register>
+    In Binary -> p/t $<variable/register>
+    In Hex    -> p/x $<variable/register>

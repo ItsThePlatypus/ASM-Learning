@@ -1,0 +1,21 @@
+     1                                  ; Hello.asm
+     2                                  ; A simple assembly program
+     3                                  
+     4                                  section .data
+     5 00000000 48656C6C6F2C20776F-         msg     db  "Hello, world!",10,0
+     5 00000009 726C64210A00       
+     6                                      msgLen  equ $-msg 
+     7                                  section .bss
+     8                                  section .text
+     9                                      global main
+    10                                  main:
+    11 00000000 B801000000                  mov rax, 1
+    12 00000005 BF01000000                  mov rdi, 1
+    13 0000000A 48BE-                       mov rsi, msg
+    13 0000000C [0000000000000000] 
+    14 00000014 BA0F000000                  mov rdx, msgLen
+    15 00000019 0F05                        syscall
+    16                                  
+    17 0000001B B83C000000                  mov rax, 60
+    18 00000020 BB00000000                  mov rbx, 0
+    19 00000025 0F05                        syscall
