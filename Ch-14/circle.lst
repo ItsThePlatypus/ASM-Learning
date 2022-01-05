@@ -1,0 +1,36 @@
+     1                                  ; This file contains all functions relating to the circle
+     2                                  extern pi
+     3                                  section .data
+     4                                  
+     5                                  section .bss
+     6                                  
+     7                                  section .text
+     8                                      global c_area
+     9                                  
+    10                                  c_area:
+    11                                      section .text
+    12 00000000 55                              push rbp
+    13 00000001 4889E5                          mov rbp, rsp
+    14                                  
+    15 00000004 F20F100C25-                     movsd xmm1, qword [pi]
+    15 00000009 [00000000]         
+    16 0000000D F20F59C0                        mulsd xmm0, xmm0
+    17 00000011 F20F59C1                        mulsd xmm0, xmm1        ; Can this be replaced with mulsd xmm0, qword [pi]?
+    18                                  
+    19 00000015 C9                              leave
+    20 00000016 C3                              ret
+    21                                  
+    22                                      global c_circum
+    23                                  
+    24                                  c_circum:
+    25                                      section .text
+    26 00000017 55                              push rbp
+    27 00000018 4889E5                          mov rbp, rsp
+    28                                  
+    29 0000001B F20F100C25-                     movsd xmm1, qword [pi]
+    29 00000020 [00000000]         
+    30 00000024 F20F58C0                        addsd xmm0, xmm0
+    31 00000028 F20F59C1                        mulsd xmm0, xmm1
+    32                                  
+    33 0000002C C9                              leave
+    34 0000002D C3                              ret 

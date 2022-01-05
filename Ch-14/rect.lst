@@ -1,0 +1,32 @@
+     1                                  ; This file contains all functions relating to rectangle functions
+     2                                  section .data
+     3                                  
+     4                                  section .bss
+     5                                  
+     6                                  section .text
+     7                                      global r_area
+     8                                  
+     9                                  r_area:
+    10                                      section .text
+    11 00000000 55                              push rbp
+    12 00000001 4889E5                          mov rbp, rsp
+    13                                  
+    14 00000004 4889F0                          mov rax, rsi
+    15 00000007 480FAFC7                        imul rax, rdi
+    16                                  
+    17 0000000B C9                              leave
+    18 0000000C C3                              ret
+    19                                  
+    20                                      global r_circum
+    21                                  
+    22                                  r_circum:
+    23                                      section .text
+    24 0000000D 55                              push rbp
+    25 0000000E 4889E5                          mov rbp, rsp
+    26                                  
+    27 00000011 4889F0                          mov rax, rsi
+    28 00000014 4801F8                          add rax, rdi
+    29 00000017 4801C0                          add rax, rax
+    30                                  
+    31 0000001A C9                              leave
+    32 0000001B C3                              ret

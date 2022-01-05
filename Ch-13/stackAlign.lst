@@ -1,0 +1,84 @@
+     1                                  ; Demonstrating the need for stack alignment
+     2                                  
+     3                                  extern printf
+     4                                  section .data
+     5 00000000 32202A205069203D20-         fmt     db  "2 * Pi = %.14f",10,0
+     5 00000009 252E3134660A00     
+     6 00000010 112D4454FB210940            pi      dq  3.14159265358979
+     7                                  
+     8                                  section .bss
+     9                                  
+    10                                  section .text
+    11                                  
+    12                                  func3:
+    13 00000000 55                          push rbp
+    14                                      
+    15 00000001 F20F100425-                 movsd xmm0, [pi]
+    15 00000006 [10000000]         
+    16 0000000A F20F580425-                 addsd xmm0, [pi]
+    16 0000000F [10000000]         
+    17 00000013 48BF-                       mov rdi, fmt
+    17 00000015 [0000000000000000] 
+    18 0000001D B801000000                  mov rax, 1
+    19 00000022 E8(00000000)                call printf
+    20                                  
+    21 00000027 5D                          pop rbp
+    22 00000028 C3                          ret
+    23                                  
+    24                                  func2:
+    25 00000029 55                          push rbp
+    26                                  
+    27 0000002A E8D1FFFFFF                  call func3
+    28                                  
+    29 0000002F 5D                          pop rbp
+    30 00000030 C3                          ret
+    31                                  
+    32                                  func1:
+    33 00000031 55                         push rbp
+    34                                  
+    35 00000032 E8F2FFFFFF                  call func2
+    36                                  
+    37 00000037 5D                          pop rbp
+    38 00000038 C3                          ret 
+    39                                  
+    40                                      global main
+    41                                  
+    42                                  main:
+    43 00000039 55                          push rbp
+    44                                  
+    45 0000003A E8F2FFFFFF                  call func1
+    46                                  
+    47 0000003F 5D                          pop rbp
+    48 00000040 C3                          ret
+    49                                  
+    50                                  ;***************************************************************************************************
+    51                                  ; INFORMATION
+    52                                  ;
+    53                                  ;   -> The above program may or may not run; it's pure luck!
+    54                                  ;   -> This is all down to whether the program is correctly aligned in the stack when run...
+    55                                  ;
+    56                                  ;   Stack Alighnment
+    57                                  ;   
+    58                                  ;   -> The stack MUST have a 16-bit alignment when a function is called
+    59                                  ;   -> If not, the program will crash, even if it's aligned to 8-bits for example
+    60                                  ;
+    61                                  ;   -> To counter this, we manually align the stack every time a function is called
+    62                                  ;   -> You dont explicitly have to, but not including it may cause your program to randomly crash
+    63                                  ;   -> We simply push RBP to stack before it can be modified, which preserves the 16-bit alignment
+    64                                  ;       - push rbp | mov rbp, rsp 
+    65                                  ;       - mov rsp, rbp | pop rbp
+    66                                  ;
+    67                                  ;   Stack Frames and Functions
+    68                                  ;
+    69                                  ;   -> In principle, every time a function is called, you need to build a new stack frame
+    70                                  ;   -> This is done the same way as in the main function
+    71                                  ;
+    72                                  ;   -> There are two types of functions
+    73                                  ;       - Branch Functions: These call other functions
+    74                                  ;       - Leaf Functions: These do not call other functions
+    75                                  ;   -> Branch functions NEED to be aligned to stack
+    76                                  ;   -> Leaf functions don't need to be, as long as they don't call any functions
+    77                                  ; 
+    78                                  ;   -> The rule of thumb, however, is to always include a stack frame
+    79                                  ;
+    80                                  ;***************************************************************************************************
