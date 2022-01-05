@@ -1,0 +1,29 @@
+     1                                  ; Integrating C functions into asm code
+     2                                  extern printf
+     3                                  
+     4                                  section .data
+     5 00000000 48656C6C6F2C20576F-         msg     db "Hello, World!",10,0
+     5 00000009 726C64210A00       
+     6 0000000F 54686520737472696E-         fmtstr  db "The string is: %s",0
+     6 00000018 672069733A20257300 
+     7                                  
+     8                                  section .bss
+     9                                  
+    10                                  section .text
+    11                                      global main
+    12                                  
+    13                                  main:
+    14 00000000 55                          push rbp
+    15 00000001 4889E5                      mov rbp, rsp
+    16                                  
+    17 00000004 B800000000                  mov rax, 0
+    18 00000009 48BF-                       mov rdi, fmtstr
+    18 0000000B [0F00000000000000] 
+    19 00000013 48BE-                       mov rsi, msg
+    19 00000015 [0000000000000000] 
+    20 0000001D E8(00000000)                call printf
+    21                                  
+    22 00000022 4889EC                      mov rsp, rbp
+    23 00000025 B83C000000                  mov rax, 60
+    24 0000002A BF00000000                  mov rdi, 0
+    25 0000002F 0F05                        syscall

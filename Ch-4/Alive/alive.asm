@@ -6,9 +6,12 @@ section .data
     msg2Len equ $-msg2
     radius  dq 357
     pi      dq 3.14
+
 section .bss
+
 section .text
     global main
+
 main:
     push rbp
     mov rbp, rsp

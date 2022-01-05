@@ -1,0 +1,42 @@
+     1                                  ; An example of basic jumps in a program
+     2                                  
+     3                                  extern printf
+     4                                  section .data
+     5 00000000 2A00000000000000            number1     dq  42
+     6 00000008 2900000000000000            number2     dq  41
+     7 00000010 4E756D62657231203E-         fmt1        db  "Number1 >= Number2",10,0
+     7 00000019 3D204E756D62657232-
+     7 00000022 0A00               
+     8 00000024 4E756D62657232203E-         fmt2        db  "Number2 >= Number1",10,0
+     8 0000002D 3D204E756D62657231-
+     8 00000036 0A00               
+     9                                  
+    10                                  section .bss
+    11                                  section .text
+    12                                      global main
+    13                                  main:
+    14 00000000 55                          push rbp
+    15 00000001 4889E5                      mov rbp, rsp
+    16                                      
+    17 00000004 488B0425[00000000]          mov rax, [number1]
+    18 0000000C 488B1C25[08000000]          mov rbx, [number2]
+    19 00000014 4839D8                      cmp rax, rbx
+    20 00000017 7D16                        jge greater
+    21                                  
+    22 00000019 B800000000                  mov rax, 0
+    23 0000001E 48BF-                       mov rdi, fmt2
+    23 00000020 [2400000000000000] 
+    24 00000028 E8(00000000)                call printf
+    25 0000002D EB16                        jmp exit
+    26                                  
+    27                                  greater:
+    28 0000002F B800000000                  mov rax, 0
+    29 00000034 48BF-                       mov rdi, fmt1
+    29 00000036 [1000000000000000] 
+    30 0000003E E8(00000000)                call printf
+    31 00000043 EB00                        jmp exit
+    32                                  
+    33                                  exit:
+    34 00000045 4889EC                      mov rsp, rbp
+    35 00000048 5D                          pop rbp
+    36 00000049 C3                          ret
