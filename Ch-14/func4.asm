@@ -1,4 +1,4 @@
-; An example of importing externa functions
+; An example of importing external functions
 extern printf
 extern c_area
 extern c_circum
@@ -15,10 +15,10 @@ section .data
 
     fmtf    db  "%s %f",10,0
     fmti    db  "%s %d",10,0
-    ca      db  "The circle area is ",0
-    cc      db  "The circle cicumference is ",0
-    ra      db  "The rectangle area is ",0
-    rc      db  "The rectangle perimeter is ",0
+    ca      db  "The circle area is",0
+    cc      db  "The circle cicumference is",0
+    ra      db  "The rectangle area is",0
+    rc      db  "The rectangle perimeter is",0
 
 section .bss
 
