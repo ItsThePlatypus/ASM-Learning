@@ -1,0 +1,132 @@
+     1                                  ; My attempt at a fizz-buzz program
+     2                                  extern printf
+     3                                  
+     4                                  section .data
+     5 00000000 6400000000000000            counter     dq  100         ; Used for the main loop
+     6 00000008 0F00000000000000            numFizzBuzz dq  15          ; 15 = Fizz Buzz
+     7 00000010 0300000000000000            numFizz     dq  3           ; 3 = Fizz
+     8 00000018 0500000000000000            numBuzz     dq  5           ; 5 = Buzz
+     9 00000020 0000000000000000            number      dq  0           ; The number we start from - 1, in this case 0
+    10                                  
+    11 00000028 202D2046697A7A00            fizzMsg     db  " - Fizz",0         ; Strings to print
+    12 00000030 202D2042757A7A00            buzzMsg     db  " - Buzz",0
+    13 00000038 202D2046697A7A2042-         fizzBuzzMsg db  " - Fizz Buzz",0
+    13 00000041 757A7A00           
+    14 00000045 202D204E6F7468696E-         defaultMsg  db  " - Nothing",0
+    14 0000004E 6700               
+    15 00000050 446F6E6500                  complete    db  "Done",0
+    16 00000055 256425730A00                strfmt      db  "%d%s",10,0
+    17 0000005B 25730A00                    endfmt      db  "%s",10,0
+    18                                  
+    19                                  section .bss
+    20 00000000 <res 00000008>              currentNumber   resq    1   ; We will use this to store the start number as it is incremented
+    21 00000008 <res 00000008>              loopCounter     resq    1
+    22                                  
+    23                                  section .text
+    24                                      global main
+    25                                  
+    26                                  main:
+    27 00000000 4889E5                      mov rbp, rsp                    ; Time to align the stack...
+    28 00000003 55                          push rbp
+    29                                      
+    30 00000004 488B0C25[00000000]          mov rcx, [counter]              ; Move our variables to the registers 
+    31 0000000C 488B0425[20000000]          mov rax, [number]               ; Sadly the most efficient way of moving number into current number to save it 
+    32 00000014 48890425[00000000]          mov [currentNumber], rax
+    33 0000001C 4831C0                      xor rax, rax                    ; Hide our shame and clear rax
+    34                                      
+    35                                  mainLoop: 
+    36 0000001F 4883F900                    cmp rcx, 0                      ; Have we completed the cycle?
+    37 00000023 741F                        je exit                         ; Exit if so
+    38 00000025 48890C25[08000000]          mov [loopCounter], rcx          ; Save the loop counter from being overwritten
+    39                                      
+    40 0000002D 488B3C25[00000000]          mov rdi, [currentNumber]        ; Move the number to test into rdi
+    41 00000035 48FFC7                      inc rdi                         ; To make the loop work we have to increment this value
+    42 00000038 EB37                        jmp testFizzBuzz                ; Start checking
+    43                                  
+    44                                  looper:
+    45 0000003A 488B0C25[08000000]          mov rcx, [loopCounter]          ; Place the counter back into rcx for checking (And ease of looping)
+    46 00000042 E2DB                        loop mainLoop                   ; Decrement the counter and jump back to the main loop
+    47                                  
+    48                                  exit:
+    49 00000044 B800000000                  mov rax, 0                      ; Print the exit message and quit
+    50 00000049 48BF-                       mov rdi, endfmt
+    50 0000004B [5B00000000000000] 
+    51 00000053 48BE-                       mov rsi, complete
+    51 00000055 [5000000000000000] 
+    52                                      
+    53 0000005D E8(00000000)                call printf
+    54                                      
+    55 00000062 4889EC                      mov rsp, rbp
+    56 00000065 B83C000000                  mov rax, 60
+    57 0000006A BF00000000                  mov rdi, 0
+    58 0000006F 0F05                        syscall
+    59                                      
+    60                                  testFizzBuzz:
+    61 00000071 48893C25[00000000]          mov [currentNumber], rdi    ; Save the number from being overwritten this round (Can now be reference whenever)
+    62                                  
+    63 00000079 4889F8                      mov rax, rdi                ; Put number to check in rax
+    64 0000007C BA00000000                  mov rdx, 0                  ; Clear rdx (This is where the modulo is stored so we need it empty)
+    65 00000081 488B3C25[08000000]          mov rdi, [numFizzBuzz]
+    66 00000089 48F7FF                      idiv rdi                    ; Divide the number to check by 15
+    67                                      
+    68 0000008C 4883FA00                    cmp rdx, 0                  ; Does it divide by 15?
+    69 00000090 7528                        jne testBuzz                ; If not go here
+    70                                      
+    71 00000092 488B3425[00000000]          mov rsi, [currentNumber]    ; If it divides, print the message saying it does
+    72 0000009A 48BF-                       mov rdi, strfmt
+    72 0000009C [5500000000000000] 
+    73 000000A4 48BA-                       mov rdx, fizzBuzzMsg
+    73 000000A6 [3800000000000000] 
+    74 000000AE B800000000                  mov rax, 0
+    75 000000B3 E8(00000000)                call printf
+    76                                  
+    77 000000B8 EB80                        jmp looper                  ; Jump to pre-loop processing
+    78                                      
+    79                                  testBuzz:
+    80 000000BA 488B0425[00000000]          mov rax, [currentNumber]    ; Same as above but with 5
+    81 000000C2 BA00000000                  mov rdx, 0
+    82 000000C7 488B3C25[18000000]          mov rdi, [numBuzz]
+    83 000000CF 48F7FF                      idiv rdi
+    84                                      
+    85 000000D2 4883FA00                    cmp rdx, 0
+    86 000000D6 752B                        jne testFizz
+    87                                      
+    88 000000D8 488B3425[00000000]          mov rsi, [currentNumber]
+    89 000000E0 48BF-                       mov rdi, strfmt
+    89 000000E2 [5500000000000000] 
+    90 000000EA 48BA-                       mov rdx, buzzMsg
+    90 000000EC [3000000000000000] 
+    91 000000F4 B800000000                  mov rax, 0
+    92 000000F9 E8(00000000)                call printf
+    93                                      
+    94 000000FE E937FFFFFF                  jmp looper
+    95                                      
+    96                                  testFizz:
+    97 00000103 488B0425[00000000]          mov rax, [currentNumber]    ; Same as above but with 3  
+    98 0000010B BA00000000                  mov rdx, 0
+    99 00000110 488B3C25[10000000]          mov rdi, [numFizz]
+   100 00000118 48F7FF                      idiv rdi
+   101                                      
+   102 0000011B 4883FA00                    cmp rdx, 0
+   103 0000011F 752B                        jne fail
+   104                                      
+   105 00000121 488B3425[00000000]          mov rsi, [currentNumber]
+   106 00000129 48BF-                       mov rdi, strfmt
+   106 0000012B [5500000000000000] 
+   107 00000133 48BA-                       mov rdx, fizzMsg
+   107 00000135 [2800000000000000] 
+   108 0000013D B800000000                  mov rax, 0
+   109 00000142 E8(00000000)                call printf
+   110                                  
+   111 00000147 E9EEFEFFFF                  jmp looper
+   112                                  
+   113                                  fail:
+   114 0000014C 48BF-                       mov rdi, strfmt             ; If the number does not fit, go here
+   114 0000014E [5500000000000000] 
+   115 00000156 488B3425[00000000]          mov rsi, [currentNumber]
+   116 0000015E 48BA-                       mov rdx, defaultMsg
+   116 00000160 [4500000000000000] 
+   117 00000168 B800000000                  mov rax, 0
+   118 0000016D E8(00000000)                call printf
+   119                                      
+   120 00000172 E9C3FEFFFF                  jmp looper
