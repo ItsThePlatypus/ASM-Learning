@@ -53,7 +53,7 @@ main:
 ;   -> The above program may or may not run; it's pure luck!
 ;   -> This is all down to whether the program is correctly aligned in the stack when run...
 ;
-;   Stack Alighnment
+;   Stack Alignment
 ;   
 ;   -> The stack MUST have a 16-bit alignment when a function is called
 ;   -> If not, the program will crash, even if it's aligned to 8-bits for example

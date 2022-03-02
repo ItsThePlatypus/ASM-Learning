@@ -1,0 +1,86 @@
+     1                                  ; Example of basic I/O using assembly 
+     2                                  section .data
+     3 00000000 48656C6C6F2C20776F-         msg1        db  "Hello, world!",10,0
+     3 00000009 726C64210A00       
+     4                                      msg1len     equ $-msg1 
+     5 0000000F 596F7572207475726E-         msg2        db  "Your turn, type something: ",0
+     5 00000018 2C207479706520736F-
+     5 00000021 6D657468696E673A20-
+     5 0000002A 00                 
+     6                                      msg2len     equ $-msg2 
+     7 0000002B 596F75722072657370-         msg3        db  "Your response: ",0
+     7 00000034 6F6E73653A2000     
+     8                                      msg3len     equ $-msg3 
+     9                                  
+    10                                      inputLen    equ 10              ; Input length buffer
+    11                                  
+    12                                  section .bss
+    13 00000000 <res 0000000B>              input   resb    inputLen + 1    ; Remember the null character!
+    14                                  
+    15                                  section .text
+    16                                      global main
+    17                                  
+    18                                  main:
+    19 00000000 55                          push rbp
+    20 00000001 4889E5                      mov rbp, rsp 
+    21                                  
+    22 00000004 48BE-                       mov rsi, msg1           ; Message to print
+    22 00000006 [0000000000000000] 
+    23 0000000E BA0F000000                  mov rdx, msg1len        ; Length of message
+    24                                  
+    25 00000013 E852000000                  call prints
+    26                                  
+    27 00000018 48BE-                       mov rsi, msg2
+    27 0000001A [0F00000000000000] 
+    28 00000022 BA1C000000                  mov rdx, msg2len
+    29                                  
+    30 00000027 E83E000000                  call prints
+    31                                  
+    32 0000002C 48BE-                       mov rsi, input          ; Address of input buffer
+    32 0000002E [0000000000000000] 
+    33 00000036 BA0A000000                  mov rdx, inputLen       ; Length of input buffer
+    34                                  
+    35 0000003B E83C000000                  call reads
+    36                                  
+    37 00000040 48BE-                       mov rsi, msg3
+    37 00000042 [2B00000000000000] 
+    38 0000004A BA10000000                  mov rdx, msg3len
+    39                                  
+    40 0000004F E816000000                  call prints
+    41                                  
+    42 00000054 48BE-                       mov rsi, input
+    42 00000056 [0000000000000000] 
+    43 0000005E BA0A000000                  mov rdx, inputLen
+    44                                  
+    45 00000063 E802000000                  call prints
+    46                                  
+    47 00000068 C9                          leave
+    48 00000069 C3                          ret
+    49                                  
+    50                                  prints:
+    51 0000006A 55                          push rbp
+    52 0000006B 4889E5                      mov rbp, rsp
+    53                                  
+    54                                      ; RSI = Address of string
+    55                                      ; RDX = Length of string
+    56                                  
+    57 0000006E B801000000                  mov rax, 1          ; RAX = 1 = Write...
+    58 00000073 BF01000000                  mov rdi, 1          ; RDI = 1 = ...to Standard Input/Ouput
+    59 00000078 0F05                        syscall
+    60                                  
+    61 0000007A C9                          leave
+    62 0000007B C3                          ret
+    63                                  
+    64                                  reads:
+    65 0000007C 55                          push rbp
+    66 0000007D 4889E5                      mov rbp, rsp
+    67                                  
+    68                                      ; RSI = Address of input buffer
+    69                                      ; RDX = Length of input buffer
+    70                                  
+    71 00000080 B800000000                  mov rax, 0          ; RAX = Read...
+    72 00000085 BF01000000                  mov rdi, 1          ; RDI = ...to Standard Input/Ouput
+    73 0000008A 0F05                        syscall
+    74                                  
+    75 0000008C C9                          leave 
+    76 0000008D C3                          ret
