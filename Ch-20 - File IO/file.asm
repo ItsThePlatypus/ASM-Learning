@@ -38,6 +38,7 @@ section .data
     ; Create Mode Permission Flags
     S_IRUSR    equ   00400q      ;user read permission
     S_IWUSR    equ   00200q      ;user write permission
+    S_IRWUSR   equ   00600q      ;Potentially skipping OR operation?
       
     ; File related text
     NL         equ   0xa
