@@ -62,7 +62,7 @@ testFizzBuzz:
     mov [currentNumber], rdi    ; Save the number from being overwritten this round (Can now be reference whenever)
 
     mov rax, rdi                ; Put number to check in rax
-    mov rdx, 0                  ; Clear rdx (This is where the modulo is stored so we need it empty)
+    xor rdx, rdx                ; Clear rdx (This is where the modulo is stored so we need it empty)
     mov rdi, [numFizzBuzz]
     idiv rdi                    ; Divide the number to check by 15
     
@@ -79,7 +79,7 @@ testFizzBuzz:
     
 testBuzz:
     mov rax, [currentNumber]    ; Same as above but with 5
-    mov rdx, 0
+    xor rdx, rdx
     mov rdi, [numBuzz]
     idiv rdi
     
@@ -96,7 +96,7 @@ testBuzz:
     
 testFizz:
     mov rax, [currentNumber]    ; Same as above but with 3  
-    mov rdx, 0
+    xor rdx, rdx
     mov rdi, [numFizz]
     idiv rdi
     
