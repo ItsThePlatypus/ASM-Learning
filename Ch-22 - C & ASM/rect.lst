@@ -1,0 +1,31 @@
+     1                                  ; Definition of functions for the rectangle
+     2                                  
+     3                                  section .data
+     4                                  
+     5                                  section .bss
+     6                                  
+     7                                  section .text
+     8                                  global rArea
+     9                                      rArea:
+    10                                          section .text
+    11 00000000 55                                  push rbp
+    12 00000001 4889E5                              mov rbp, rsp
+    13                                  
+    14 00000004 4889F8                              mov rax, rdi
+    15 00000007 48F7EE                              imul rsi
+    16                                              
+    17 0000000A C9                                  leave
+    18 0000000B C3                                  ret 
+    19                                  
+    20                                  global rCircum
+    21                                      rCircum:
+    22                                          section .text
+    23 0000000C 55                                  push rbp
+    24 0000000D 4889E5                              mov rbp, rsp
+    25                                  
+    26 00000010 4889F8                              mov rax, rdi
+    27 00000013 4801F0                              add rax, rsi 
+    28 00000016 486BC002                            imul rax, 2
+    29                                  
+    30 0000001A C9                                  leave
+    31 0000001B C3                                  ret

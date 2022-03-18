@@ -1,0 +1,35 @@
+     1                                  ; Definition of functions for the circle
+     2                                  
+     3                                  section .data
+     4 00000000 50455254FB210940            pi      dq  3.141592654
+     5                                  
+     6                                  section .bss
+     7                                  
+     8                                  section .text
+     9                                  global cArea
+    10                                      cArea:
+    11                                          section .text
+    12 00000000 55                                  push rbp
+    13 00000001 4889E5                              mov rbp,rsp
+    14                                  
+    15 00000004 F20F100C25-                         movsd xmm1, qword[pi]
+    15 00000009 [00000000]         
+    16 0000000D F20F59C0                            mulsd xmm0, xmm0
+    17 00000011 F20F59C1                            mulsd xmm0, xmm1
+    18                                  
+    19 00000015 C9                                  leave
+    20 00000016 C3                                  ret
+    21                                  
+    22                                  global cCircum
+    23                                      cCircum:
+    24                                          section .text
+    25 00000017 55                                  push rbp
+    26 00000018 4889E5                              mov rbp, rsp 
+    27                                  
+    28 0000001B F20F100C25-                         movsd xmm1, qword[pi]
+    28 00000020 [00000000]         
+    29 00000024 F20F58C0                            addsd xmm0, xmm0 
+    30 00000028 F20F59C1                            mulsd xmm0, xmm1
+    31                                  
+    32 0000002C C9                                  leave
+    33 0000002D C3                                  ret

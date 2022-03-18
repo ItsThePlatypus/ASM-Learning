@@ -1,0 +1,37 @@
+     1                                  ; Function for reversing the string
+     2                                  
+     3                                  section .data
+     4                                  
+     5                                  section .bss
+     6                                  
+     7                                  section .text
+     8                                  global sReverse
+     9                                      sReverse: 
+    10 00000000 55                              push rbp
+    11 00000001 4889E5                          mov rbp, rsp
+    12                                  
+    13                                      pushing:
+    14 00000004 4889F1                          mov rcx, rsi
+    15 00000007 4889FB                          mov rbx, rdi 
+    16 0000000A 41BC00000000                    mov r12, 0
+    17                                  
+    18                                          pushLoop:
+    19 00000010 4A8B0423                            mov rax, qword[rbx + r12]
+    20 00000014 50                                  push rax
+    21 00000015 49FFC4                              inc r12
+    22 00000018 E2F6                                loop pushLoop
+    23                                  
+    24                                      popping:
+    25 0000001A 4889F1                          mov rcx, rsi
+    26 0000001D 4889FB                          mov rbx, rdi
+    27 00000020 41BC00000000                    mov r12, 0
+    28                                  
+    29                                          popLoop:
+    30 00000026 58                                  pop rax
+    31 00000027 42880423                            mov byte[rbx + r12], al
+    32 0000002B 49FFC4                              inc r12
+    33 0000002E E2F6                                loop popLoop
+    34                                  
+    35 00000030 4889F8                          mov rax, rdi
+    36 00000033 C9                              leave
+    37 00000034 C3                              ret
